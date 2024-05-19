@@ -935,20 +935,70 @@ $ (f^* omega) (xi_1, ..., xi_k) := omega (f_*(xi_1), ..., f_*(xi_k)), quad foral
 $ integral_sigma omega^k = integral_D f^* omega^k $
 
 *Def.* A _chain_ (链) of dim $k$ on a manifold $M$ consists of a finite collection of $k$-dim cells $sigma_1,...,sigma_r$ and integers $m_1,...,m_r$ called _multiplicities_. Denote it by $C_k = m_1 sigma_1 + ... + m_r sigma_r$.
-
 $ integral_C_k = sum m_i integral_sigma_i omega $
 
+*Def.* Let $sigma = (D, f, O r)$ be a cell of dim $k$, we define its _boundary_ $partial sigma$ to be a collection of cells of dim $k-1$,
+$ partial sigma = sum sigma_i, quad sigma_i = (D_i, f_i, O r_i), $
+where $D_i$ are faces of $D$, $f_i = f|_D_i$.
 
+Let $e_1,...,e_k$ be a basis of $RR^k$. At each point of $D_i$, we choose an outer normal (外法向). An orientation on $D_i$ is a choice of basis $f_1,...,f_(k-1)$, we require $(n, f_1,...,f_(k-1))$ to have the same orientation as $(e_1,...,e_k)$.
 
+#line(length: 100%)
 
+*Exterior differentiation*
 
+To see the divergence we assume the domain $Omega$ is very small.
 
+Suppose $Omega$ is the parallelepiped (平行六面体) spanned by $epsilon xi_1, epsilon xi_2, epsilon xi_3$
 
+The _divergence_ is obtained as the limit
+$ lim (integral_(partial Omega_epsilon) omega^2)/(epsilon^3 V), quad V = det(xi_1,xi_2,xi_3) $
 
+*Def. (exterior derivative)* (_omitted, see page 189 _)
 
+*Thm.* Let $omega^k$ be a $k$-form, then there exists a unique $(k+1)$-form $Omega$ on $T M$, given as 
+$ F(epsilon xi_1,...,epsilon xi_(k+1)) = epsilon^(k+1) Omega(xi_1,...,xi_(k+1)) + o(epsilon^(k+1)) quad (epsilon -> 0) $
+where $F=integral_sigma omega^k$, $sigma$ be the boundary of the parallelepiped spanned by $(epsilon xi_1,...,epsilon xi_(k+1))$.
 
+Moreover, if $omega^k = sum a_(i_1,...,i_k) dif x_i_1 and ... and dif x_i_k$, then $ Omega = dif omega^k = sum dif a_(i_1,...,i_k) and  dif x_i_1 and ... and dif x_i_k $
 
+_注. 这基本给出了 stokes 公式._
 
+_Example._ $omega^2 = A dif y and dif z + B dif z and dif x + C dif x and dif y$, then $Omega = dif omega^2 = "div"(A,B,C) dif x and dif y and dif z$.
+
+_Proof._ 只证最简单的 $1$-form $omega^1 = a(x_1,x_2) dif x_1$.
+
+Given $xi,eta$ (small enough) shown as below, we calculate $F(xi,eta) = integral_sigma omega^1$, where $sigma$ is the boundary of the parallelogram spanned by $eta,xi$.
+
+#figure(
+  image("img/stokes.png", width: 35%)
+)
+
+$display(
+integral_sigma omega^1 
+&= integral_0^1 (a(xi t) - a(xi t + eta))xi_1 - (a(eta t) - a(eta t + xi))eta_1 dif t & (xi_i = dif x_i (xi), eta_i = dif x_i (eta))& \
+&= integral_0^1 -(cancel((partial a)/(partial x_1)eta_1)+(partial a)/(partial x_2)eta_2)xi_1 + (cancel((partial a)/(partial x_1)xi_1)+(partial a)/(partial x_2)xi_2)eta_1 dif t &+ o(||xi||^2 + ||eta||^2) \
+&&("derivative taken at" x_1=x_2=0) \
+&= (partial a)/(partial x_2) (eta_2 xi_1 - xi_1 eta_2) +  o(||xi||^2 + ||eta||^2)
+)$
+
+$==> Omega(xi, eta) = (partial a)/(partial x_2) (eta_2 xi_1 - xi_1 eta_2) ==> Omega = (partial a)/(partial x_2) dif x_2 and dif x_1 = dif omega^1$. 
+
+*Thm. (Stokes formula)* Let $omega$ be a $k$-form, $Omega$ be a chain of dim $k+1$.  Then $ integral_(partial Omega) omega= integral_Omega dif omega $
+
+_Proof. See page 192, using the thm above._
+
+#line()
+
+*Def.* We say a differential form $omega$ is _closed_ if $dif omega = 0$.
+
+A closed form, when integrated on a boundary, is always 0.
+
+*Def.* A differential $k$-form $omega$ is called _exact_ if there exists a $k-1$-form $alpha$ s.t. $dif alpha = omega$.
+
+For any differential form, we have $dif^2 omega = 0 ==>$ an exact form is closed.
+
+Dually, for any chain $Omega$, $partial^2 Omega = 0$.
 
 #pagebreak()
 
@@ -956,6 +1006,73 @@ $ integral_C_k = sum m_i integral_sigma_i omega $
 Chapter 08 Symplectic manifolds
 #line(length: 100%)
 
+A _symplectic manifold_ $(M^(2n),omega^2)$ is an even dimensional manifold $M^(2n)$ endowed with a closed nondegenerate differential $2$-form $omega^2$.
 
-Symplectic form $omega$: a closed ($dif omega = 0$) non-degenerate $2$-form 
+nondegenerate: $forall xi,eta in T_x M, omega^2|_x (xi,eta) = angle.l A xi, eta angle.r$, where $A$ is nondegenerate and anti-symmetric.
+
+_Example._ $RR^(2n), quad x_1,...,x_n,y_1,...,y_n, quad omega^2 = dif y_1 and dif x_1 + ... + dif y_n and dif x_n$
+
+The most important symplectic manifold for us is $T^* M$ (_cotangent bundle_, 余切丛), $ T^* M = union.big_(x in M) T_x^* M $
+where $T_x^* M$ is the _cotangent space_ of $M$ at $x$, i.e. the space of $1$-forms on $T_x M$. 
+
+#line()
+
+The Lagrangian mechanics happens on $T M$, $ L: T M -> RR $
+
+The Hamiltonian mechanics happens on $T^* M$, $ H: T^* M -> RR $
+
+$H(p, q) = display(sup_(dot(q))) angle.l p, dot(q) angle.r - L(dot(q), q), quad dot(q) in T_q M$
+
+The generalized momentum $p$ is a linear functional on $T_q M$.
+
+#line()
+
+On $T^* M$, there is a natual symplectic form 
+$ omega^2 = dif p and dif q = sum dif p_i and dif q_i $
+
+$omega^2 = dif omega^1$, where $omega = p dif q$ is a $1$-form on $T^* M$.
+
+Let $q$ be coordinates on $M$, $p$ be coordinates on $T_q^* M$. 
+
+Let $N = T^* M$, $omega = p dif q$ is a 1-form on $N$. At point $x=(p,q) in N$,
+
+$
+omega|_x: &T_x N &&-> RR \
+&(p dif q) xi &&= p dot.c xi_q
+$
+
+没看懂!!
+
+#line()
+
+We next introduce the Hamiltonian vector field.
+
+*Def.* To every vector $xi in T_x M$, where $(M,omega^2)$ is a symplectic manifold. We can associate a $1$-form $ omega_xi^1 (eta) = omega^2 (eta,xi), forall eta in T_x M $
+
+This induces an isomorphism between $T_x M$ and $T_x^* M$, $xi |-> omega_xi^1$
+
+By the nondegeneracy, $omega^2 (eta,xi) = angle.l A eta, xi angle.r = angle.l eta, A^T xi angle.r$, thus $omega_xi^1$ is exactly the vector $A^T xi$.
+
+Let $H: M -> RR$ be a function, then $dif H$ is a $1$-form on $T^* M$. By the isomorphism, there exists a vector field on $M$ denoted by $X_H$, called the Hamiltonian vector field.
+
+_但反过来, 每个 $M$ 上的 vector field 不一定是一个函数的微分. 如果是, 我们定义_:
+
+*Def.* We say a vector field $X_H$ a _Hamiltonian vector field_, if there exists $H$ s.t. $omega(dot.c, X_H) = dif H$.
+
+_Example._ $RR^2, quad (y,x), quad omega = dif y and dif x$
+
+$omega(xi, X) = angle.l J xi, X angle.r = dif H xi = ((partial H)/(partial y), (partial H)/(partial x)) dot.c (xi_y, xi_x)$, 其中 $J = mat(0,-1;1,0)$
+
+$==> X = (-(partial H)/(partial x), (partial H)/(partial y)) = (dot(y), dot(x))$
+
+#line()
+
+*Thm.* A Hamiltonian flow preserves the symplectic structure 
+
+
+
+
+#pagebreak()
+
+
 
