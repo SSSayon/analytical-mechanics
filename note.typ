@@ -1021,13 +1021,13 @@ The Lagrangian mechanics happens on $T M$, $ L: T M -> RR $
 
 The Hamiltonian mechanics happens on $T^* M$, $ H: T^* M -> RR $
 
-$H(p, q) = display(sup_(dot(q))) angle.l p, dot(q) angle.r - L(dot(q), q), quad dot(q) in T_q M$
+$H(p, q) = display(sup_(dot(q))) (angle.l p, dot(q) angle.r - L(dot(q), q)), quad dot(q) in T_q M$
 
 The generalized momentum $p$ is a linear functional on $T_q M$.
 
 #line()
 
-On $T^* M$, there is a natual symplectic form 
+On $T^* M$, there is _a natual symplectic form_ 
 $ omega^2 = dif p and dif q = sum dif p_i and dif q_i $
 
 $omega^2 = dif omega^1$, where $omega = p dif q$ is a $1$-form on $T^* M$.
@@ -1041,8 +1041,6 @@ omega|_x: &T_x N &&-> RR \
 &(p dif q) xi &&= p dot.c xi_q
 $
 
-没看懂!!
-
 #line()
 
 We next introduce the Hamiltonian vector field.
@@ -1051,26 +1049,153 @@ We next introduce the Hamiltonian vector field.
 
 This induces an isomorphism between $T_x M$ and $T_x^* M$, $xi |-> omega_xi^1$
 
+We denote this isomorphism as $I$:
+$ I: &T_x^*M &-> &T_x M \
+&omega_xi^1 = omega^2 (dot.c, xi) &|-> &xi $
+
 By the nondegeneracy, $omega^2 (eta,xi) = angle.l A eta, xi angle.r = angle.l eta, A^T xi angle.r$, thus $omega_xi^1$ is exactly the vector $A^T xi$.
 
-Let $H: M -> RR$ be a function, then $dif H$ is a $1$-form on $T^* M$. By the isomorphism, there exists a vector field on $M$ denoted by $X_H$, called the Hamiltonian vector field.
+Let $H: M -> RR$ be a function, then $dif H$ is a $1$-form on $T^* M$. By the isomorphism, there exists a vector field on $M$ denoted by $X_H = I dif H$, called the Hamiltonian vector field.
 
 _但反过来, 每个 $M$ 上的 vector field 不一定是一个函数的微分. 如果是, 我们定义_:
 
 *Def.* We say a vector field $X_H$ a _Hamiltonian vector field_, if there exists $H$ s.t. $omega(dot.c, X_H) = dif H$.
 
-_Example._ $RR^2, quad (y,x), quad omega = dif y and dif x$
+_Example._ $RR^2, quad (y,x), quad omega = dif y and dif x, quad H:RR^2->RR$ a Hamiltonian function
 
-$omega(xi, X) = angle.l J xi, X angle.r = dif H xi = ((partial H)/(partial y), (partial H)/(partial x)) dot.c (xi_y, xi_x)$, 其中 $J = mat(0,-1;1,0)$
+设 $H$ 对应的 Hamiltonian vector field 为 $X$, 则由定义有 $omega(xi, X) = dif H(xi)$
 
-$==> X = (-(partial H)/(partial x), (partial H)/(partial y)) = (dot(y), dot(x))$
+$==> mat(delim: "|", xi_y, X_y; xi_x, X_x) = (partial H)/(partial y) xi_y + (partial H)/(partial x) xi_x ==> X = (X_y, X_x) = (-(partial H)/(partial x), (partial H)/(partial y))$
 
 #line()
 
-*Thm.* A Hamiltonian flow preserves the symplectic structure 
+Given Hamiltonian vector field $X_H$, we define the _Hamiltonian flow_ by solving the ODE
+$ dot(x) = X_H (x), quad x in N = T^*M $
+denoted by 
+$ g^t: N &-> N \
+x &|-> g^t x $
 
+_Example._ 上面那个例题中, $H$ 导出的 Hamiltonian flow 便由 
+#align(center, $(dot(y), dot(x)) = (-(partial H)/(partial x), (partial H)/(partial y))$) 
+给出, 这即是 Hamiltonian canonical equation.
 
+*Thm.* A Hamiltonian flow preserves the symplectic structure
+$ (g^t)^* omega = omega $
+_Proof. See page 204._ 
+// TODO
 
+#line()
+
+*Law of energy conservation*
+
+*Thm.* Let $H: M -> RR$ be a Hamiltonian function, then it is constant under the corresponding Hamiltonian flow (with Hamiltonian function $H$).
+
+_Proof._ $space dif/(dif t) H(g^t x) = dif H (X_H) = omega(X_H, X_H) =0$.
+
+\
+#line(length: 100%)
+ 
+*The algebraic structure of Hamiltonian mechanics*
+
+#line()
+
+*The commutator of vector fields*
+
+Let $A(z)$ be a vector field on $RR^n$, we have the ODE $dot(z) = A(z)$.
+
+Let $a^t$ be the flow of the ODE.
+
+*Def.* Given a smooth function $phi: RR^n -> RR$, the Lie derivative of $phi$ along the vector field $A$ is defined as
+$ (cal(L)_A phi) (z) = lr(dif/(dif t)mid(|))_(t=0) phi(a^t z) = dif phi dot.c A = sum A_i partial/(partial z_i) phi $
+We denote
+$ cal(L)(A) := A_1 (z) partial/(partial z_1) + ... + A_n (z) partial/(partial z_n) $
+
+*Lemma.* The operator $cal(L)_B cal(L)_A - cal(L)_A cal(L)_B$ is a #underline("first order") linear operator.
+
+_Proof._ 
+#align(center, $display(
+  cases(cal(L)_B cal(L)_A phi = sum_i B_i partial/(partial z_i) (sum_j A_j partial/(partial z_j) phi) = sum_(i,j) lr((B_i (partial A_j)/(partial z_i) (partial phi)/(partial z_j) + cancel(B_i A_j (partial^2 phi)/(partial z_i partial z_j) phi))),
+  cal(L)_A cal(L)_B phi = sum_i A_i partial/(partial z_i) (sum_j B_j partial/(partial z_j) phi) = sum_(i,j) lr((A_i (partial B_j)/(partial z_i) (partial phi)/(partial z_j) + cancel(A_i B_j (partial^2 phi)/(partial z_i partial z_j) phi))))
+) "(指相减时消掉)"$)
+
+$==> (cal(L)_B cal(L)_A - cal(L)_A cal(L)_B) phi = sum_(i,j) (B_i (partial A_j)/(partial z_i) - A_i (partial B_j)/(partial z_i)) partial/(partial z_j) phi =: sum_(i,j) [A,B]_j space partial/(partial z_j) phi = [A,B] dot.c dot(phi)$
+
+We denote $ [A,B]_j := sum_i (B_i (partial A_j)/(partial z_i) - A_i (partial B_j)/(partial z_i)) $
+called _commutator_.
+
+*Prop.* For all smooth vector fields $A,B,C$, we have
+
+(1) linearity: $[a A + b B, C] = a[A,C] + b[B,C]$\
+(2) anti-symmetry: $[A,B] = -[B,A]$\
+(3) _Jacobi identity:_ $[[A,B],C] + [[B,C],A] + [[C,A],B] = 0$
+
+These implies the space of $C^oo$ vector fields form a _Lie algebra_.
+
+*Thm.* Let $a^t, b^t$ be the flows generated by vector fields $A,B$ respectively. Then the flows _commute_ iff the commutator of the vector field vanish, i.e.
+$ a^t circle.tiny b^s = b^s circle.tiny a^t <==> [A,B]=0 $
+
+_Proof._ We first have 
+$display(lr(partial^2/(partial s partial t)mid(|))_(t=s=0) (phi(a^t b^s z) - phi(b^s a^t z)) = (cal(L)_B cal(L)_A - cal(L)_A cal(L)_B) phi) = [A,B] dot.c dot(phi)$ 
+
+This proves "$==>$".
+
+For the "$<==$" part, if $[A,B]=0$, then $phi(a^t b^s z) - phi(b^s a^t z) = o(s^2 + t^2) quad (s,t-> 0)$
+
+We partition the ractangle $[0,t) times [0,s)$ into $N^2$ equal small ractangles.
+
+We deform the path of $b^s a^t$ into $a^t b^s$ by $N^2$ steps. The total error is $o(1)$.
+
+Letting $N -> oo$, we get $phi(a^t b^s z) = phi(b^s a^t z), forall phi$.
+
+#line()
+
+*Poisson bracket*
+
+*Def.* Let $F, H$ be two functions on a symplectic manifold $(M, omega)$, the _Poisson bracket_ ${F, H}$ is defined as the derivative of $F$ along the Hamiltonian flow of $H$:
+$ {F,H}(z) = lr(dif/(dif t)mid(|))_(t=0) F(g_H^t z) = dif F dot.c X_H = omega(X_H,X_F) $
+Since $omega$ is anti-symmetric, ${F,H} = -{H,F}$.
+
+_Example._ $RR_((x,y))^2, quad omega = dif y and dif x$
+
+$quad quad quad quad cases(dot(x) = (partial F)/(partial y), dot(y) = -(partial F)/(partial x)) quad cases(dot(x) = (partial H)/(partial y), dot(y) = -(partial H)/(partial x))$
+
+$==> {F,H}(z) = lr(dif/(dif t)mid(|))_(t=0) F(g_H^t z) = (partial F)/(partial x) dot(x) + (partial F)/(partial y) dot(y) = (partial F)/(partial x) (partial H)/(partial y) - (partial F)/(partial y) (partial H)/(partial x)$.
+
+*Prop.* The Poisson bracket has the following properties: $forall H_1,H_2,H_3 in C^oo (M)$, we have
+
+(1) linearity \
+(2) anti-symmetry \
+(3) _Jacobi identity:_ ${{H_1, H_2}, H_3} + {{H_2, H_3}, H_1} + {{H_3, H_1}, H_2} = 0$ 
+
+Thus, the space of $C^oo (M)$ also forms a Lie algebra under the Poisson bracket.
+
+*Thm.* Let $Beta,Gamma$ be two Hamiltonian vector field with Hamiltonians $beta, gamma$. Then $[Beta,Gamma]$ is a Hamiltonian vector field whose Hamiltonian is exactly ${beta,gamma}$.
+
+_Proof._ Let ${beta, gamma} = delta$. 
+
+$forall alpha$, by Jacobi identity, we have
+${alpha,delta} = {alpha, {beta, gamma}} = {{alpha, beta}, gamma} - {{alpha,gamma}, beta}$.
+
+${{alpha, beta}, gamma} = cal(L)_Gamma {alpha,beta} = cal(L)_Gamma cal(L)_Beta alpha, space {{alpha,gamma}, beta} = cal(L)_Beta {alpha,gamma} = cal(L)_Beta cal(L)_Gamma alpha$
+
+Let $Delta$ be the Hamiltonian vector field of $delta$, then ${alpha, delta} = cal(L)_Delta alpha$
+
+$==> cal(L)_Delta = cal(L)_Gamma cal(L)_Beta - cal(L)_Beta cal(L)_Gamma = cal(L)_[Beta,Gamma]$
+
+\
+#line()
+
+*Symplectic transformation*
+
+_Example._ $H: RR^2-> RR, H(y,x) = 1/2 (y^2 + x^2)$, Hamiltonian equation $cases(dot(y) = -x, dot(x) = y)$
+
+Let $cases(x= r sin theta, y= r cos theta) space$ be the polar coordinates.
+
+$==> cases(dot(r) = ... = 0, dot(theta) = ... = 1)$
+
+$H(r,theta) = 1/2 r^2$, if Hamiltonian equation holds, $cases(dot(r) = -(partial H)/(partial theta) = 0, dot(theta) = (partial H)/(partial r) = r)$, contradicts! \
+_问题在于这一变换并不是辛变换!_ \
+Instead of $(r, theta)$, we use $(I, theta)$, where $I = r^2/2$. Then $H=I, cases(dot(I) = -(partial H)/(partial theta) = 0, dot(theta) = (partial H)/(partial I) = 1) space$ agrees.
 
 #pagebreak()
 
